@@ -10,7 +10,7 @@ import {
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
-    // apiKey: "",
+    apiKey: "AIzaSyCac-QhiHMszb_WO3SGptSjV0BenP17Xcs",
     authDomain: "style-hive-db.firebaseapp.com",
     projectId: "style-hive-db",
     storageBucket: "style-hive-db.firebasestorage.app",
