@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { signInAuthWithEmailAndPassword, createUserDocumentFromAuth, signInWithGooglePopup } from "../../utils/firebase/firebase.utils";
 import Button from '../button/button.component';
 import FormInput from '../form-input/form-input.component';
 import './sign-in-form.styles.scss';
+import {UserContext, userContext} from '../../context/user.context';
 
 // How we create a generic object and update it through useState :)
 const SignInForm = () =>{
@@ -10,7 +11,7 @@ const SignInForm = () =>{
         email: '',
         password: '',
     }
-
+    const {setCurrentUser} = useContext(UserContext);
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password } = formFields;
     console.log(formFields);
@@ -23,8 +24,9 @@ const SignInForm = () =>{
     event.preventDefault();
 
     try {
-      const response = signInAuthWithEmailAndPassword(email, password);
-      console.log(response);
+      const {user} = signInAuthWithEmailAndPassword(email, password);
+      setCurrentUser(user);
+      console.log(user);
       resetFormFields();
     } catch (error) {
       // if (error.code == 'auth/invalid-credential'){
