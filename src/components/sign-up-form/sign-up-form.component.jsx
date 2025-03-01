@@ -1,9 +1,8 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 import Button from '../button/button.component';
 import FormInput from '../form-input/form-input.component';
 import './sign-up-form.styles.scss';
-import { UserContext } from "../../context/user.context";
 
 // How we create a generic object and update it through useState :)
 const SignUpForm = () =>{
@@ -14,7 +13,6 @@ const SignUpForm = () =>{
         confirmPassword: '',
     }
 
-    const {setCurrentUser} = useContext(UserContext);
 
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {displayName, email, password, confirmPassword } = formFields;
@@ -37,8 +35,7 @@ const SignUpForm = () =>{
         email,
         password
       );
-      setCurrentUser(user);
-      await createUserDocumentFromAuth(user, { displayName });
+      await createUserDocumentFromAuth(user);
       resetFormFields();
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {

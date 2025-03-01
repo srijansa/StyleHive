@@ -3,7 +3,7 @@ import { signInAuthWithEmailAndPassword, createUserDocumentFromAuth, signInWithG
 import Button from '../button/button.component';
 import FormInput from '../form-input/form-input.component';
 import './sign-in-form.styles.scss';
-import {UserContext, userContext} from '../../context/user.context';
+// import {UserContext} from '../../context/user.context';
 
 // How we create a generic object and update it through useState :)
 const SignInForm = () =>{
@@ -11,7 +11,6 @@ const SignInForm = () =>{
         email: '',
         password: '',
     }
-    const {setCurrentUser} = useContext(UserContext);
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password } = formFields;
     console.log(formFields);
@@ -25,8 +24,8 @@ const SignInForm = () =>{
 
     try {
       const {user} = signInAuthWithEmailAndPassword(email, password);
-      setCurrentUser(user);
-      console.log(user);
+      // console.log(user);
+      await createUserDocumentFromAuth(user);
       resetFormFields();
     } catch (error) {
       // if (error.code == 'auth/invalid-credential'){
@@ -43,8 +42,7 @@ const SignInForm = () =>{
         setFormFields({...formFields, [name]: value});
     }
     const logGoogleUser = async () => {
-      const { user } = await signInWithGooglePopup();
-      const userDocRef = await createUserDocumentFromAuth(user);
+      await signInWithGooglePopup();
     };
     return(
         <div className='sign-up-container'>
