@@ -6,9 +6,11 @@ import './navigation.styles.scss';
 import  {signOutUser} from '../../utils/firebase/firebase.utils';
 import CartIcon from '../../components/cart-icon/cart-icon.component';
 import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
+import { CartContext } from '../../context/cart.context';
 
 const Navigation = () =>{
     const {currentUser} = useContext(UserContext);
+    const {isCartOpen} = useContext(CartContext);
     // console.log(currentUser+"hello");
     // const signOutHandler = async () => {
     //     const res = await signOutUser(); 
@@ -25,7 +27,7 @@ const Navigation = () =>{
                     SHOP
                 </Link>
                 { currentUser ? (<span className='nav-link' onClick={signOutUser}>SIGN OUT</span>) : (<Link className='nav-link' to='/sign-in'>SIGN IN</Link>)}
-                <CartIcon/>
+                {isCartOpen && <CartIcon/>}
             </div>
             <CartDropdown/>
         </div>
