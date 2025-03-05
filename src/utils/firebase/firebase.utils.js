@@ -10,7 +10,7 @@ import {
   signOut,
   onAuthStateChanged
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch } from 'firebase/firestore';
 import { useCallback } from 'react';
 
 const firebaseConfig = {
@@ -35,6 +35,22 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const signInWithGoogleRedirect = () => signInWithGoogleRedirect(auth, provider);
 
 export const db = getFirestore();
+
+export const addCollectionAndDocuments = async ( collectionKey, objectsToAdd ) => {
+  if (!Array.isArray(objectsToAdd)) {
+    console.error("Error: objectsToAdd is not an array", objectsToAdd);
+    return;
+  }
+  
+  const batch = writeBatch(db);
+  const collectionRef = collection(db, collectionKey);
+  objectsToAdd.forEach((object) => {
+     const docRef = doc(collectionRef, object.title.toLowerCase());
+     batch.set(docRef, object);
+  });
+  await batch.commit();
+  console.log('check');
+};
 
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
     if (!userAuth) return;
